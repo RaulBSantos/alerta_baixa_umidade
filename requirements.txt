@@ -1,0 +1,2 @@
+telegram-send==0.34
+pytest==7.1.2
