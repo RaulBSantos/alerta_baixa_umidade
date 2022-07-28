@@ -1,16 +1,17 @@
 import RPi.GPIO as GPIO
 import Adafruit_DHT as dht
+from datetime import datetime
 import time
 import logging
 
-from globals import AIR_HUMIDITY_MIN
+from globals import AIR_HUMIDITY_MIN, WORKING_TIME_RANGE
 from telegram_notifier import TelegramNotifier
 
 SENSOR_PIN = 17
 RED_LED_PIN = 27
 TIME_CICLE_SECONDS = 60 * 5
 
-logging.basicConfig(filename='../sensor.log',
+logging.basicConfig(filename='alerta_baixa_umidade.log',
                     format='%(asctime)s %(message)s',
                     level=logging.INFO)
 
@@ -34,9 +35,10 @@ if __name__ == '__main__':
     GPIO.setwarnings(False)
     GPIO.setup(RED_LED_PIN, GPIO.OUT)
     logging.info('GPIO configured!')
-    telegram = TelegramNotifier()
+    telegram = TelegramNotifier(air_humidity_min=AIR_HUMIDITY_MIN)
     while True:
-        humidity, temperature = read_humidity_and_temperature_sensor()
-        set_led_on_when_low_humidity(humidity)
-        telegram.alert_low_humidity(humidity, temperature)
-        time.sleep(TIME_CICLE_SECONDS)
+        if datetime.now().hour in WORKING_TIME_RANGE:
+            humidity, temperature = read_humidity_and_temperature_sensor()
+            set_led_on_when_low_humidity(humidity)
+            telegram.alert_low_humidity(humidity, temperature)
+            time.sleep(TIME_CICLE_SECONDS)
