@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Pytest Coverage Action
+        # You may pin to the exact commit or the version.
+        # uses: twyle/oryks-code-coverage@ee94663168fe4fe1fce6cfe06b4ba05ffc755cf6
+        uses: twyle/oryks-code-coverage@v0.17.1
+        # with:
+          # The directory containing the source code.
+          #codedirectory: # optional, default is The project root i.e '.'
+          # The directory containing the tests.
+          #testdirectory: # optional, default is tests\
+          # The pycov configuration file
+          #pycovconfigfile: # optional, default is .coveragerc
+          # The pytest configuration file.
+          #pytestconfigfile: # optional, default is setup.cfg
+          # The GitHub Token.
+          #github_token: # optional, default is 
+          # The Code Coverage token.
+          #oryks_token: # optional, default is 
